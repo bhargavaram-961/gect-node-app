@@ -1,28 +1,32 @@
-import express from 'express'
-const app = express()
-app.listen(8080,()=>{console.log("Server Started")});
+const express = require("express");
+const cors = require("cors");
+const app = express();
+app.use(cors());
+app.listen(8080,()=>{
+    console.log("Server Started on port 8080");
+});
+
 app.get("/",(req,res)=>{
-    return res.send("Good morning!")
-
+  return res.send("Hello world !");
 });
+
 app.get("/greet",(req,res)=>{
-    return res.send("Greetings fellow!")
-
+    return res.send("Greetings fellow!");
 });
+
 app.get("/name",(req,res)=>{
-    return res.send("Bhargava Ram")
-
+  return res.send("<h1>Bhargava Ram</h1>");
 });
+
 app.get("/weather",(req,res)=>{
-    return res.send("35")
+  return res.send("Weather is sunny 40 degrees");
+})
 
-});
+const products = [
+  { id: 1,name:"Product 1",price:100},
+  { id: 2,name:"Product 2",price:200},
+  { id: 3,name:"Product 3",price:300}
+];
 app.get("/products",(req,res)=>{
-   const products=[
-    {name:"product 1",price:"45"},
-    {name:"product 2",price:"95"},
-    {name:"product 3",price:"50"},
-   ]
-   return res.json(products);
-
-});
+ return res.json(products);
+})
