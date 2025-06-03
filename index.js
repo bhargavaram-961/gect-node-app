@@ -1,14 +1,33 @@
 
 import cors from "cors";
 import express from "express";
+import mongoose from "mongoose";
 const app = express();
 app.use(cors());
+app.use(express.json())
 app.listen(8080,()=>{
     console.log("Server Started on port 8080");
 });
 
-app.get("/",(req,res)=>{
-  return res.send("Hello world !");
+app.get("/", (req, res) => {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Express App Links</title>
+    </head>
+    <body>
+      <h1>Express App Routes</h1>
+      <ul>
+        <li><a href="/greet">Greet</a></li>
+        <li><a href="/name">Name</a></li>
+        <li><a href="/weather">Weather</a></li>
+        <li><a href="/products">Products</a></li>
+      </ul>
+    </body>
+    </html>
+  `;
+  res.send(html);
 });
 
 app.get("/greet",(req,res)=>{
@@ -30,4 +49,32 @@ const products = [
 ];
 app.get("/products",(req,res)=>{
  return res.json(products);
+})
+app.listen(8080,()=>{
+    mongoose.connect("mongodb://localhost:27017/gcet");
+    console.log("Server connected to Mongo DB");
+});
+const userSchema=mongoose.Schema({
+    name:{type:String},
+    email:{type:String},
+    password:{type:String}
+});
+const user=mongoose.model("User",userSchema);
+
+app.post("/register",async(req,res)=>{
+    const {name,email,password}=req.body    
+ const result= await user.insertMany({name:name,email:email,password:password});
+ return res.json(result);
+})
+app.post("/login",async(req,res)=>{
+    const {email,password}=req.body    
+ const result= await user.findOne({email:email,password:password});
+ if(result)
+ {
+  return res.json("login succesful!!");  
+ }
+ else{
+    return res.json("access denied!!");
+ }
+ 
 })
