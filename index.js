@@ -2,6 +2,8 @@
 import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
+import userRouter from "./routes/userRoutes.js";
+import productRouter from "./routes/productRouter.js";
 const app = express();
 app.use(cors());
 app.use(express.json())
@@ -47,43 +49,20 @@ app.get("/weather",(req,res)=>{
 //   { id: 2,name:"Product 2",price:200},
 //   { id: 3,name:"Product 3",price:300}
 // ];
-app.get("/products",(req,res)=>{
- return res.json(products);
-})
+// app.get("/products",(req,res)=>{
+//  return res.json(products);
+// })
+app.use("/users", userRouter);
+
+app.use("/products", productRouter);
+
 app.listen(8080,()=>{
     mongoose.connect("mongodb://localhost:27017/gcet");
     console.log("Server connected to Mongo DB");
 });
 
 
-app.post("/register",async(req,res)=>{
-    const {name,email,password}=req.body    
- const result= await user.insertMany({name:name,email:email,password:password});
- return res.json(result);
-});
-
-app.post("/login",async(req,res)=>{
-    const {email,password}=req.body    
- const result= await user.findOne({email:email,password:password});
- if(result)
- {
-  return res.json("login succesful!!");  
- }
- else{
-    return res.json("access denied!!");
- }
- 
-});
 
 
-app.post("/products",async(req,res)=>{
-    const{name,price}=req.body;
-    const found= await product.findOne({name,price:Number(price)});
-    if(found)
- {
-  return res.json(found);  
- }
- else{
-    return res.json("product unavaliable!!");
- }
-})
+
+
