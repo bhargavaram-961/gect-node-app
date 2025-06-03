@@ -1,5 +1,6 @@
-const express = require("express");
-const cors = require("cors");
+
+import cors from "cors";
+import express from "express";
 const app = express();
 app.use(cors());
 app.listen(8080,()=>{
