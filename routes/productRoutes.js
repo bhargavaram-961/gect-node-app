@@ -14,6 +14,4 @@ productRouter.post("/products",async(req,res)=>{
  }
 });
 
-
-
 export default productRouter
